@@ -22,6 +22,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.text.DecimalFormat;
 
 public class MainActivity extends AppCompatActivity {
@@ -30,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
     TextView tx1,tx2,tx3,tx4,tx5, dane;
     private final String url = "https://api.openweathermap.org/data/2.5/forecast";
     private final String appid = "94e43de29fe647389ba802cda8eefdde";
-    DecimalFormat df = new DecimalFormat("#.##");
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
         tx5 = findViewById(R.id.textView8);
         dane = findViewById(R.id.textView3);
         imageView = (ImageView) findViewById(R.id.imageView);
+        String city = etCity.getText().toString().trim();
 
     }
 
@@ -78,6 +85,9 @@ public class MainActivity extends AppCompatActivity {
                            jsonObjectList = jsonArrayList.getJSONObject(8);
                            dane.setText("Tempertatura w " + city + " jutro");
                            Log.d("jutro", response);
+                           jsonObjectList = jsonArrayList.getJSONObject(0);
+                           dane.setText("Dzisiejsza tempertatura w " + city);
+                           Log.d("dzisiaj", response);
                        }
                         JSONArray jsonArray = jsonObjectList.getJSONArray("weather");
                         JSONObject jsonObjectWeather = jsonArray.getJSONObject(0);
@@ -86,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
                         double temp = jsonObjectMain.getDouble("temp");
                         double feelsLike = jsonObjectMain.getDouble("feels_like");
                         int humidity = jsonObjectMain.getInt("humidity");
-                        float pressure = jsonObjectMain.getInt("pressure");
+                        int pressure = jsonObjectMain.getInt("pressure");
                         JSONObject jsonObjectWind = jsonObjectList.getJSONObject("wind");
                         String wind = jsonObjectWind.getString("speed");
                         if (condition.equals("Clouds"))
